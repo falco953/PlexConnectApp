@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+Copyright (C) 2015 Baa. All rights reserved.
+See LICENSE.txt for this sample’s licensing information
+-->
+{{CUT({{GET(noItems)}})}}{{
+{{SET(noItems:true)}}
+{{XML()}}{{
+<document>
+    <productTemplate theme="light">
+        <background>
+            <img style="tv-img-treatment:uber;" src="{{IMAGEURL(MediaContainer/Directory/art::1080)}}"/>
+        </background>
+        <banner>
+            <infoList>
+                
+                <info>
+                    <header>
+                        <title>{{TEXT(Genre)}}</title>
+                    </header>
+                    {{COPY(MediaContainer/Directory/Genre)}}{{  <!-- COPY till 5 or so? -->
+                    <text>{{VAL(tag)}}</text>
+                    }}
+                </info>
+                <info>
+                    <header>
+                        <title>{{TEXT(Country)}}</title>
+                    </header>
+                    {{COPY(MediaContainer/Directory/Country)}}{{  <!-- COPY till 5 or so? -->
+                    <text>{{VAL(tag)}}</text>
+                    }}
+                </info>
+            </infoList>
+            <stack>
+                <title><![CDATA[{{VAL(MediaContainer/Directory/title)}}]]></title>
+                <description allowsZooming="true" moreLabel="more"
+                    onSelect="Presenter.loadContext('Music_Description', '{{PMSID()}}', '{{PATH()}}')">
+                    <![CDATA[{{VAL(MediaContainer/Directory/summary)}}]]>
+                </description>
+                <row>
+                    <buttonLockup
+                        onSelect="audioPlayer.play('{{PMSID()}}', '{{PATH({{VAL(MediaContainer/Directory/key)}})}}')"
+                        >
+                        <badge src="resource://button-play" />
+                        <title>{{TEXT(Play)}}</title>
+                    </buttonLockup>
+                </row>
+
+            </stack>
+        </banner>
+        
+        {{XML({{VAL(MediaContainer/Directory/key)}})}}{{
+
+            <shelf>
+                <header>
+                    <title>Albums</title>
+                </header>
+                <section>
+                    {{COPY(MediaContainer/Directory)}}{{
+                    {{SET(noItems:false)}}
+                    <lockup
+                        onSelect="Presenter.load('Music_TrackList', '{{PMSID()}}', '{{PATH({{VAL(key)}})}}')"
+                        onPlay="audioPlayer.play('{{PMSID()}}', '{{PATH({{VAL(key)}})}}')"
+                        onSelectHold="modal"
+                        >
+                        <img src="{{IMAGEURL(thumb::768)}}" width="250" height="250" />
+                        <title><![CDATA[{{VAL(title)}}]]></title>
+                    </lockup>
+                    }}
+                    
+                </section>
+            </shelf>
+            }}
+
+        </productTemplate>
+</document>
+
+<!-- album list-
+    <stackTemplate>
+    <banner>
+      <title><![CDATA[{{VAL(MediaContainer/title2)}}]]></title>
+      <heroImg src="{{IMAGEURL(MediaContainer/art:1920)}}" />
+    </banner>
+    <collectionList>
+      <grid>
+
+        <section>
+{{COPY(MediaContainer/Directory)}}{{
+{{SET(noItems:false)}}
+          <lockup
+            onSelect="Presenter.load('Music_TrackList', '{{PMSID()}}', '{{PATH({{VAL(key)}})}}')"
+            onPlay="audioPlayer.play('{{PMSID()}}', '{{PATH({{VAL(key)}})}}')"
+            onSelectHold="modal"
+            >
+            <img src="{{IMAGEURL(thumb::768)}}" width="300" height="300" />
+            <title><![CDATA[{{VAL(title)}}]]></title>
+        </lockup>
+}}
+
+        </section>
+      
+      </grid>
+    </collectionList>
+    </stackTemplate>
+
+
+</document>-->
+}}
+}}
+
+{{IF({{GET(noItems)}})}}{{  <!--enable if no items added-->
+<document>
+  <alertTemplate>
+    <title>TITLE</title>
+    <description>{{TEXT(Plex Media Server: No Items Available)}}</description>
+  </alertTemplate>
+</document>
+}}

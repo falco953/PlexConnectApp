@@ -48,12 +48,12 @@ App.onLaunch = function(options) {
 
 App.onResume = function() {
   console.log('onResume');
-  Presenter.load('Main','','');
+  //Presenter.load('Main','','');
 }
 
 App.onSuspend = function() {
   console.log('onSuspend');
-  navigationDocument.clear();
+  //navigationDocument.clear();
 }
 
 App.onExit = function() {

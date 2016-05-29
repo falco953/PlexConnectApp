@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+Copyright (C) 2015 Baa. All rights reserved.
+See LICENSE.txt for this sample’s licensing information
+-->
+<document>
+    <head>
+        <style>
+            .darkBackgroundColor {
+            background-color: #1f1f1f;
+            }
+        </style>
+    </head>
+  <listTemplate>
+    <list>
+      
+      <header>
+        <title>{{TEXT(Settings)}}</title>
+      </header>
+      
+      <section>
+        <header>
+          <title>{{TEXT(Plex Media Environment)}}</title>
+        </header>
+        
+        <listItemLockup
+          id="Discover"
+          onSelect="discover(event);"
+          onSuccess=""
+          >
+          <title>{{TEXT(Discover)}}</title>
+          <decorationLabel>{{TEXT(online:)}} {{PMSCNT(all)}}</decorationLabel>
+        </listItemLockup>
+        
+{{IF(!{{USRVAL(adminname)}})}} {{
+        <listItemLockup
+          id="MyPlexSignInOut"
+          onSelect="myPlex.signIn(event);"
+          onSuccess=""
+          onError="Presenter.load('MyPlex_SignInFailed','','');"
+          >
+          <title>{{TEXT(Sign In)}}</title>
+          <decorationLabel />
+          <decorationImage src="resource://chevron" />
+        </listItemLockup>
+}}
+{{IF({{USRVAL(adminname)}})}} {{
+        <listItemLockup
+          id="MyPlexSignInOut"
+          onSelect="myPlex.signOut(event);"
+          >
+          <title>{{TEXT(Sign Out)}}</title>
+          <decorationLabel>{{USRVAL(adminname)}}</decorationLabel>
+        </listItemLockup>
+}}
+
+        <listItemLockup
+          id="MyPlexHomeUser"
+          onSelect="Presenter.load('MyPlex_HomeUsers', '', '');"
+          >
+          <row>
+            <title>{{TEXT(Switch Home User)}}</title>
+            <decorationLabel>{{USRVAL(name)}}</decorationLabel>
+            <decorationImage src="resource://chevron" />
+          </row>
+        </listItemLockup>
+      </section>
+
+      <section>
+        <header>
+          <title>{{TEXT(Appearance)}}</title>
+        </header>
+
+        <listItemLockup
+          id="theme"
+          onSelect="Settings.toggle(event)"
+          >
+          <title>{{TEXT(Theme)}}</title>
+          <decorationLabel>{{SETTING(theme)}}</decorationLabel>
+        </listItemLockup>
+        <listItemLockup
+          id="themeExternalOverride"
+          onSelect="Settings.toggle(event)"
+          >
+          <title>{{TEXT(External Override)}}</title>
+          <decorationLabel>{{SETTING(themeExternalOverride)}}</decorationLabel>
+        </listItemLockup>
+        <listItemLockup
+            id="themeTitle"
+            onSelect="Settings.toggle(event)"
+            >
+            <title>{{TEXT(Use Banner Images)}}</title>
+            <decorationLabel>{{SETTING(themeTitle)}}</decorationLabel>
+        </listItemLockup>
+        <listItemLockup
+            id="themeMusic"
+            onSelect="Settings.toggle(event)"
+            >
+            <title>{{TEXT(Theme Music)}}</title>
+            <decorationLabel>{{SETTING(themeMusic)}}</decorationLabel>
+        </listItemLockup>
+      </section>
+
+      <section>
+        <header>
+          <title>{{TEXT(Media Replay)}}</title>
+        </header>
+
+        <listItemLockup
+          id="transcoderAction"
+          onSelect="Settings.toggle(event)"
+          >
+          <title>{{TEXT(Transcoder Action)}}</title>
+          <decorationLabel>{{SETTING(transcoderAction)}}</decorationLabel>
+        </listItemLockup>
+        <listItemLockup
+          id="transcoderQuality"
+          onSelect="Settings.toggle(event)"
+          >
+          <title>{{TEXT(Transcode Quality)}}</title>
+          <decorationLabel>{{SETTING(transcoderQuality)}}</decorationLabel>
+        </listItemLockup>
+        <listItemLockup
+          id="remoteBitrate"
+          onSelect="Settings.toggle(event)"
+          >
+          <title>{{TEXT(Remote Bitrate)}}</title>
+          <decorationLabel>{{SETTING(remoteBitrate)}}</decorationLabel>
+        </listItemLockup>
+
+      </section>
+
+    </list>
+  </listTemplate>
+</document>

@@ -42,25 +42,55 @@ setupViewDocument: function(view, pmsId, pmsPath) {
   doc.addEventListener("play", Presenter.onPlay.bind(Presenter));
   doc.addEventListener("highlight", Presenter.onHighlight.bind(Presenter));
   doc.addEventListener("load", Presenter.onLoad.bind(Presenter));  // setup search for char entered
-  
-  // store address in DOM - eg for later page refresh
-  doc.source = {
-    view: view,
-    pmsId: pmsId,
-    pmsPath: pmsPath,
-  };
-  
+    // store address in DOM - eg for later page refresh
+    doc.source = {
+        view: view,
+        pmsId: pmsId,
+        pmsPath: pmsPath,
+    };
+    
   return doc
 },
 
 load: function(view, pmsId, pmsPath) {
-  var loadingDoc = createSpinner("");
+  var loadingDoc = createSpinner("Loading...");
   loadingDoc.addEventListener("load", function() {
       var doc = Presenter.setupViewDocument(view, pmsId, pmsPath);
-      navigationDocument.replaceDocument(doc, loadingDoc);
+        navigationDocument.replaceDocument(doc, loadingDoc);
   });
   navigationDocument.pushDocument(loadingDoc);
   //navigationDocument.dismissModal();  // just in case?!  // todo: if (isModal)...?
+ 
+    
+},
+    
+loadView: function(view, pmsId, pmsPath) {
+    var doc = Presenter.setupViewDocument(view, pmsId, pmsPath);
+    navigationDocument.pushDocument(doc);
+    
+    
+},
+    
+loadArt: function(view, pmsId, pmsPath, artwork, title) {
+        var loadingDoc = createArtSpinner(title, artwork);
+    loadingDoc.addEventListener("load", function() {
+                                var doc = Presenter.setupViewDocument(view, pmsId, pmsPath);
+                                navigationDocument.replaceDocument(doc, loadingDoc);
+                                });
+    navigationDocument.pushDocument(loadingDoc);
+    //navigationDocument.dismissModal();  // just in case?!  // todo: if (isModal)...?
+    
+    
+},
+    
+    
+loadPopup: function(view, pmsId, pmsPath) {
+    var currentDoc = navigationDocument.documents[navigationDocument.documents.length-1];
+    
+    var doc = Presenter.setupViewDocument(view, pmsId, pmsPath);
+    navigationDocument.replaceDocument(doc, currentDoc);
+    navigationDocument.dismissModal();
+    
 },
 
 loadAndSwap: function(view, pmsId, pmsPath) {
@@ -73,6 +103,8 @@ loadAndSwap: function(view, pmsId, pmsPath) {
   navigationDocument.replaceDocument(loadingDoc, currentDoc);
   // navigationDocument.dismissModal();  // just in case?!  // todo: if (isModal)...?
 },
+    
+
 
 close() {
   navigationDocument.popDocument();

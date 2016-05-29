@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+Copyright (C) 2015 Baa. All rights reserved.
+See LICENSE.txt for this sample’s licensing information
+-->
+{{CUT({{GET(noItems)}})}}{{
+{{SET(noItems:true)}}
+{{XML()}}{{
+<document>
+    <head>
+        <style>
+            .darkBackgroundColor {
+            background-color: #1f1f1f;
+            }
+        </style>
+    </head>
+  <stackTemplate theme="light">
+    <banner>
+      <title><![CDATA[{{VAL(MediaContainer/title1)}}]]></title>
+      <heroImg src="{{IMAGEURL(MediaContainer/art:1920)}}" />
+
+    </banner>
+    <collectionList>
+        
+        <shelf class="shelfItems">
+            <section>
+                <header>
+                    <title>{{TEXT(OnDeck)}}</title>
+                </header>
+                {{XML(onDeck)}}{{
+                {{IFNODE(MediaContainer/Video)}}{{
+                {{COPY(MediaContainer/Video)}}{{
+                {{SET(noItems:false)}}  <!--within COPY this sets the var to false-->
+                <lockup
+                    onSelect="Presenter.loadView('TVShow_EpisodeList', '{{PMSID()}}', '{{PATH({{VAL(parentKey)}}/children)}}')"
+                    onPlay="videoPlayer.play('{{PMSID()}}', '{{PATH({{VAL(key)}})}}')"
+                    onSelectHold="ScrobbleMenu">
+                    <img src="{{IMAGEURL(grandparentThumb::384)}}" width="240" height="360" />
+                    {{IF({{VAL(viewOffset)}})}}{{
+                    <overlay>
+                        <progressBar value="{{EVAL({{VAL(viewOffset)}}.0/{{VAL(duration)}}.0)}}"/>
+                    </overlay>
+                    }}
+                    <title><![CDATA[{{VAL(title)}}]]></title>
+                    <subtitle>{{SEASONEPISODE({{VAL(parentIndex:0)}}:{{VAL(index:0)}})}}</subtitle>
+                </lockup>
+                }}
+                }}
+                }}
+            </section>
+        </shelf>
+        
+        
+        {{XML(all)}}{{
+        <separator style="color:#e4a00d">
+            <button style="height: 75; margin: -3 60 0 60; color:#e4a00d" onSelect="Presenter.loadContext('TVShow_Filters', '{{PMSID()}}', '{{PATH({{VAL(key)}})}}')">
+                <text><![CDATA[{{VAL(MediaContainer/title2)}}    ]]><badge src="resource://button-dropdown" width="36" height="21" /></text>
+            </button>
+        </separator>
+        
+        
+        
+      <grid>
+        
+        <section>
+{{COPY(MediaContainer/Directory)}}{{
+{{SET(noItems:false)}}
+          <lockup
+            onSelect="Presenter.loadView('TVShow_SeasonList', '{{PMSID()}}', '{{PATH({{VAL(key)}})}}')"
+            onSelectHold="modal"
+            >
+            <img src="{{IMAGEURL(thumb::384)}}" width="300" height="450" />
+            <title><![CDATA[{{VAL(title)}}]]></title>
+          </lockup>
+}}
+        </section>
+      
+      </grid>
+      }}
+    </collectionList>
+  </stackTemplate>
+</document>
+}}
+}}
+
+{{IF({{GET(noItems)}})}}{{  <!--enable if no items added-->
+<document>
+  <alertTemplate>
+    <title>TITLE</title>
+    <description>{{TEXT(Plex Media Server: No Items Available)}}</description>
+  </alertTemplate>
+</document>
+}}
